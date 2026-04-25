@@ -1,0 +1,1 @@
+git add . && git commit -m "fix: smart input validation" && git push
