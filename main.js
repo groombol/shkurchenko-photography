@@ -11,26 +11,32 @@
     const el = document.getElementById('curtain-intro');
     if (!el) return;
 
-    /* Шаг 1: лого появляется пока шторки закрыты */
-    setTimeout(() => el.classList.add('logo-visible'), 120);
+    const LOGO_APPEAR   = 150;   /* лого появляется через, мс */
+    const CURTAIN_OPEN  = 1100;  /* шторки начинают открываться через, мс (лого видно ~950мс) */
+    const TRAN_DURATION = 1400;  /* длительность раскрытия шторок, мс */
 
-    /* Шаг 2: шторки раскрываются */
-    setTimeout(() => el.classList.add('is-open'), 500);
+    /* Перебиваем CSS-transition динамически */
+    el.querySelectorAll('.curtain').forEach(c => {
+      c.style.transition = `transform ${TRAN_DURATION}ms cubic-bezier(0.77, 0, 0.18, 1)`;
+    });
 
-    /* Шаг 3: имя ШКУРЧЕНКО + Дмитрий вылетают снизу */
+    setTimeout(() => el.classList.add('logo-visible'), LOGO_APPEAR);
+    setTimeout(() => el.classList.add('is-open'),      CURTAIN_OPEN);
+
+    const textAt = CURTAIN_OPEN + TRAN_DURATION + 80;
     setTimeout(() => {
-      document.querySelectorAll('.hero-clip-line').forEach(line => {
-        line.classList.add('is-revealed');
-      });
-    }, 500 + 1100 + 80); /* delay curtain + 1100ms transition + buffer */
+      document.querySelectorAll('.hero-clip-line').forEach(line => line.classList.add('is-revealed'));
+    }, textAt);
 
-    /* Шаг 4: убираем overlay */
     setTimeout(() => {
-      el.style.transition = 'opacity 0.25s ease';
+      el.style.transition = 'opacity 0.3s ease';
       el.style.opacity    = '0';
-      setTimeout(() => el.remove(), 260);
-    }, 500 + 1100 + 220);
+      setTimeout(() => el.remove(), 320);
+    }, textAt + 160);
   })();
+
+
+
 
 
 
@@ -38,9 +44,9 @@
 
   const galleries = {
     portraits: ['img/IMG-1.1.jpg', 'img/IMG-1.2.jpg', 'img/IMG-1.3.jpg'],
-    subject:   ['img/IMG-2.1.jpg', 'img/IMG-2.2.jpg', 'img/IMG-2.3.jpg'],
-    studio:    ['img/IMG-3.1.jpg', 'img/IMG-3.2.jpg', 'img/IMG-3.3.jpg', 'img/IMG-3.4.jpg', 'img/IMG-3.5.jpg'],
-    creative:  ['img/IMG-4.1.jpg', 'img/IMG-4.2.jpg', 'img/IMG-4.3.jpg', 'img/IMG-4.4.jpg']
+    subject:   ['img/IMG-2.1.jpg', 'img/IMG-2.2.jpg', 'img/IMG-2.3.jpg', 'img/IMG-2.4.jpg'],
+    studio:    ['img/IMG-3.1.jpg', 'img/IMG-3.2.jpg', 'img/IMG-3.3.jpg', 'img/IMG-3.4.jpg', 'img/IMG-3.5.jpg', 'img/IMG-3.6.jpg'],
+    creative:  ['img/IMG-4.1.jpg', 'img/IMG-4.2.jpg', 'img/IMG-4.3.jpg', 'img/IMG-4.4.jpg', 'img/IMG-4.5.jpg', 'img/IMG-4.6.jpg']
   };
 
   /* ─── ЗАЩИТА ОТ КОНТЕКСТНОГО МЕНЮ ────────────────── */
@@ -204,7 +210,12 @@
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.08 });
+  }, {
+    threshold: 0.18,
+    /* Отрицательный rootMargin снизу: элемент должен оказаться
+       на 15% вверх от нижнего края экрана, чтобы анимация виделась */
+    rootMargin: '0px 0px -15% 0px',
+  });
   revealEls.forEach((el) => revealObserver.observe(el));
 
   /* ─── ПЛАВНЫЙ СКРОЛЛ (ОПТИМИЗИРОВАННЫЙ) ───────── */
