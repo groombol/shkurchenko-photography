@@ -13,7 +13,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
   }
 
-  const token  = process.env.TELEGRAM_TOKEN;
+  const token = process.env.TELEGRAM_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId) {
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
     `📸 *Новая заявка с сайта*\n\n` +
     `📞 *Контакт:* ${contact}\n` +
     `🎬 *Тип съемки:* ${type}\n` +
-    `💬 *Пожелания:* ${message}`;
+    `💬 *Коментарий:* ${message}`;
 
   try {
     const tgRes = await fetch(
