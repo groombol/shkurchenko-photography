@@ -218,7 +218,7 @@
   });
   revealEls.forEach((el) => revealObserver.observe(el));
 
-  /* ─── ПЛАВНЫЙ СКРОЛЛ (АБСОЛЮТНАЯ ТОЧНОСТЬ) ───────── */
+  /* ─── ПЛАВНЫЙ СКРОЛЛ (ДИНАМИЧЕСКИЙ ЗАХВАТ ЦЕЛИ) ───────── */
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
@@ -229,17 +229,11 @@
       e.preventDefault();
       closeSidebar();
 
-      // Ждем 300мс, пока сайдбар закроется, чтобы не перегружать мобильный рендер
+      // Ждем 300мс, чтобы телефон не подавился анимацией закрытия меню.
+      // Используем нативный метод. Он будет преследовать элемент, 
+      // даже если загрузка фото сдвинет его вниз.
       setTimeout(() => {
-        // Динамический отступ под высоту фиксированного хедера (64px мобайл, 80px десктоп)
-        const headerOffset = window.innerWidth <= 768 ? 64 : 80;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 300);
     });
   });
