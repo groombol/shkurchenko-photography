@@ -27,46 +27,51 @@
     }
     resize();
 
-    const N        = 15;   /* лепестков — 15 = максимально похоже на объектив */
-    const HOLD     = 300;  /* пауза, мс */
-    const DURATION = 2600; /* общая длительность, мс — короче = резче */
+    const N        = 16;   /* 16 лепестков */
+    const DURATION = 4200; /* мс */
 
-    /* Ключевые кадры: одно прикрытие, потом резкое полное открытие */
+    /*  Каждый кадр: [время(0-1), открытость(0-1), вращение(рад)]
+        Открытие → вращение растёт (кольцо вперёд)
+        Закрытие → вращение падает (кольцо назад)
+        Старт 0.22 — небольшая дыра, имя ШКУРЧЕНКО видно               */
     const KEYS = [
-      [0.00, 0.00],
-      [0.28, 0.72],  /* быстрый бросок до 72%  */
-      [0.45, 0.48],  /* прикрылась до 48%       */
-      [1.00, 1.00],  /* резко открылась полностью */
+      [0.00, 0.22,  0.00],  /* дыра — имя видно                          */
+      [0.11, 0.22,  0.00],  /* ПАУЗА — смотрим на имя                    */
+      [0.24, 0.68,  2.60],  /* БАМ — резко открыли + кручение вперёд     */
+      [0.36, 0.18,  0.50],  /* ШАРК — резко закрыли + кручение назад     */
+      [0.50, 0.80,  4.20],  /* БАМ — ещё шире + вперёд                   */
+      [0.61, 0.30,  2.10],  /* ШАРК — закрыли + назад                    */
+      [0.76, 0.92,  6.00],  /* БАМ — почти полностью + вперёд            */
+      [0.86, 0.62,  4.40],  /* ШАРК — дёрнули назад                      */
+      [1.00, 1.00,  7.80],  /* ПОЛНОСТЬЮ открыто                         */
     ];
 
-    /* easeOutQuart — очень резкий старт, мгновенная остановка */
-    function easeOut(x) { return 1 - Math.pow(1 - x, 4); }
+    /* БАМ — мгновенный удар, плавная остановка */
+    function easeOutExpo(x) { return x >= 1 ? 1 : 1 - Math.pow(2, -11 * x); }
+    /* ШАРК — медленный старт, резкий финал */
+    function easeInExpo(x)  { return x <= 0 ? 0 : Math.pow(2, 11 * x - 11); }
 
-    /* easeInQuart — резкий вход (для сжатия — выглядит механично) */
-    function easeIn(x) { return x * x * x * x; }
-
-    function breatheCurve(t) {
+    function interpolate(t) {
       for (let i = 0; i < KEYS.length - 1; i++) {
-        const [t0, v0] = KEYS[i];
-        const [t1, v1] = KEYS[i + 1];
+        const [t0, v0, r0] = KEYS[i];
+        const [t1, v1, r1] = KEYS[i + 1];
         if (t <= t1) {
-          const seg = (t - t0) / (t1 - t0);
-          /* открытие — easeOut (удар), закрытие — easeIn (механика) */
-          const fn  = v1 > v0 ? easeOut : easeIn;
-          return v0 + (v1 - v0) * fn(seg);
+          const seg   = (t - t0) / (t1 - t0);
+          const open  = v1 >= v0;
+          const eased = open ? easeOutExpo(seg) : easeInExpo(seg);
+          return {
+            open: v0 + (v1 - v0) * eased,
+            rot:  r0 + (r1 - r0) * eased,
+          };
         }
       }
-      return 1;
+      const last = KEYS[KEYS.length - 1];
+      return { open: last[1], rot: last[2] };
     }
 
-    /*  ПРЯМОЛИНЕЙНЫЙ N-угольник.
-        Никаких кривых — только прямые грани, как у реальной диафрагмы.
-        Эффект лепестков создаётся вращением многоугольника.           */
-    function drawIrisHole(openAmt) {
-      const r        = maxR * openAmt;
-      /* Быстрое вращение — чем заметнее, тем механичнее выглядит */
-      const rotation = openAmt * (Math.PI * 2 / N) * 0.8;
-
+    /* Прямолинейный N-угольник с независимым углом вращения */
+    function drawIrisHole(openAmt, rotation) {
+      const r = maxR * openAmt;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
         const angle = (i / N) * Math.PI * 2 - Math.PI / 2 + rotation;
@@ -84,17 +89,16 @@
       if (done) return;
       if (!startTime) startTime = ts;
 
-      const elapsed = ts - startTime - HOLD;
-      const raw     = elapsed < 0 ? 0 : Math.min(elapsed / DURATION, 1);
-      const openAmt = breatheCurve(raw);
+      const raw           = Math.min((ts - startTime) / DURATION, 1);
+      const { open, rot } = interpolate(raw);
 
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#0e0e0e';
       ctx.fillRect(0, 0, W, H);
 
-      if (openAmt > 0.005) {
+      if (open > 0.005) {
         ctx.globalCompositeOperation = 'destination-out';
-        drawIrisHole(openAmt);
+        drawIrisHole(open, rot);
         ctx.fill();
         ctx.globalCompositeOperation = 'source-over';
       }
