@@ -218,23 +218,16 @@
   });
   revealEls.forEach((el) => revealObserver.observe(el));
 
-  /* ─── ПЛАВНЫЙ СКРОЛЛ (ДИНАМИЧЕСКИЙ ЗАХВАТ ЦЕЛИ) ───────── */
+  /* ─── ПЛАВНЫЙ СКРОЛЛ (АБСОЛЮТНАЯ НАТИВНАЯ ФИЗИКА) ───────── */
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
       if (targetId === '#') return;
-      const target = document.querySelector(targetId);
-      if (!target) return;
 
-      e.preventDefault();
+      // Мы БОЛЬШЕ НЕ блокируем клик. 
+      // Браузер сам моментально и точно прокрутит страницу.
+      // Скрипту остается только свернуть меню.
       closeSidebar();
-
-      // Ждем 300мс, чтобы телефон не подавился анимацией закрытия меню.
-      // Используем нативный метод. Он будет преследовать элемент, 
-      // даже если загрузка фото сдвинет его вниз.
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
     });
   });
 
