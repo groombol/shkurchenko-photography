@@ -16,40 +16,76 @@
     });
     document.body.prepend(canvas);
 
-    const ctx  = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     let W, H, cx, cy, maxR;
 
     function resize() {
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
       cx = W / 2; cy = H / 2;
-      maxR = Math.hypot(cx, cy) * 1.15;
+      maxR = Math.hypot(cx, cy) * 1.18;
     }
     resize();
 
-    const N        = 6;       /* лепестков */
-    const HOLD     = 350;     /* пауза до начала открытия (мс) */
-    const DURATION = 1700;    /* длительность открытия (мс) */
+    const N        = 9;    /* лепестков — больше = реалистичнее */
+    const HOLD     = 400;  /* пауза перед стартом, мс */
+    const DURATION = 3600; /* общая длительность, мс */
 
-    /* easeOutExpo — быстрый старт, плавное завершение */
-    function ease(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+    /*  Кастомная кривая с «дыханием»:
+        открывается → чуть прикрывается → снова открывается → чуть прикрывается → полностью
+        Каждый отрезок имеет свой ease-in-out                                            */
+    const KEYS = [
+      [0.00, 0.00],
+      [0.32, 0.62],   /* быстро открылась до 62% */
+      [0.46, 0.44],   /* чуть прикрылась до 44% */
+      [0.62, 0.74],   /* снова открылась до 74% */
+      [0.76, 0.56],   /* ещё раз чуть прикрылась до 56% */
+      [1.00, 1.00],   /* плавно полностью открылась */
+    ];
 
-    /* Рисуем форму диафрагмы как звёздный полигон.
-       Внешние точки = «лепестки», внутренние = «перехваты между лепестками».
-       Форма растёт и вращается → визуальный эффект затвора. */
-    function drawIrisHole(t) {
-      const rotation = t * (Math.PI / N);   /* вращение по мере открытия */
-      const outerR   = maxR * t;
-      const innerR   = outerR * 0.52;       /* глубина «зазубрин» лепестков */
-      const pts      = N * 2;
+    function easeSegment(x) {
+      /* ease-in-out quadratic для каждого отрезка */
+      return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    }
+
+    function breatheCurve(t) {
+      for (let i = 0; i < KEYS.length - 1; i++) {
+        const [t0, v0] = KEYS[i];
+        const [t1, v1] = KEYS[i + 1];
+        if (t <= t1) {
+          const seg = (t - t0) / (t1 - t0);
+          return v0 + (v1 - v0) * easeSegment(seg);
+        }
+      }
+      return 1;
+    }
+
+    /*  Форма реальной диафрагмы: N-угольник с вогнутыми гранями.
+        Каждая грань — квадратичная кривая Безье с контрольной точкой,
+        утянутой к центру. Это создаёт характерный облик апертуры.     */
+    function drawIrisHole(openAmt) {
+      const r        = maxR * openAmt;
+      const rotation = openAmt * (Math.PI / N); /* лёгкое вращение = эффект лепестков */
+      const concave  = 0.18;                    /* 0 = правильный N-угол, выше = вогнутее */
 
       ctx.beginPath();
-      for (let i = 0; i < pts; i++) {
-        const angle = (i / pts) * Math.PI * 2 - Math.PI / 2 + rotation;
-        const r     = (i % 2 === 0) ? outerR : innerR;
-        const x     = cx + Math.cos(angle) * r;
-        const y     = cy + Math.sin(angle) * r;
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      for (let i = 0; i < N; i++) {
+        const a1 = (i / N)       * Math.PI * 2 - Math.PI / 2 + rotation;
+        const a2 = ((i + 1) / N) * Math.PI * 2 - Math.PI / 2 + rotation;
+
+        const x1 = cx + Math.cos(a1) * r;
+        const y1 = cy + Math.sin(a1) * r;
+        const x2 = cx + Math.cos(a2) * r;
+        const y2 = cy + Math.sin(a2) * r;
+
+        /* Контрольная точка вогнута внутрь */
+        const aMid = (a1 + a2) / 2;
+        const cpR  = r * (1 - concave);
+        const cpX  = cx + Math.cos(aMid) * cpR;
+        const cpY  = cy + Math.sin(aMid) * cpR;
+
+        if (i === 0) ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(cpX, cpY, x2, y2);
       }
       ctx.closePath();
     }
@@ -63,17 +99,17 @@
 
       const elapsed = ts - startTime - HOLD;
       const raw     = elapsed < 0 ? 0 : Math.min(elapsed / DURATION, 1);
-      const t       = ease(raw);
+      const openAmt = breatheCurve(raw);
 
-      /* 1. Заливаем чёрным */
+      /* Чёрный фон */
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#0e0e0e';
       ctx.fillRect(0, 0, W, H);
 
-      /* 2. Вырезаем отверстие диафрагмы */
-      if (t > 0) {
+      /* Вырезаем отверстие диафрагмы */
+      if (openAmt > 0.005) {
         ctx.globalCompositeOperation = 'destination-out';
-        drawIrisHole(t);
+        drawIrisHole(openAmt);
         ctx.fill();
         ctx.globalCompositeOperation = 'source-over';
       }
@@ -81,11 +117,10 @@
       if (raw < 1) {
         requestAnimationFrame(frame);
       } else {
-        /* Диафрагма полностью открылась — плавно убираем canvas */
         done = true;
-        canvas.style.transition = 'opacity 0.35s ease';
+        canvas.style.transition = 'opacity 0.4s ease';
         canvas.style.opacity    = '0';
-        setTimeout(() => canvas.remove(), 380);
+        setTimeout(() => canvas.remove(), 420);
       }
     }
 
