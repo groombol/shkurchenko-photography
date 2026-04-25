@@ -362,7 +362,7 @@
     }
   });
 
-  /* ─── SMART CONTACT VALIDATION & SUBMIT ──────────── */
+  /* ─── SMART CONTACT INPUT (МАСКА + ВАЛИДАЦИЯ) ─────── */
   const smartContactInput = document.getElementById('smart-contact');
   const contactError      = document.getElementById('contact-error');
 
@@ -376,31 +376,78 @@
     if (smartContactInput) smartContactInput.classList.remove('contact-input--error');
   }
 
-  /* Определяем тип ввода: phone (начинается с + или цифры) | social (всё остальное) */
-  function detectMode(val) {
-    return /^[+\d]/.test(val) ? 'phone' : 'social';
+  /* ТЕЛЕФОН: начинается с +, 7, 8, 9 */
+  function isPhoneMode(val) {
+    return /^[+789]/.test(val);
+  }
+
+  /* Применяем маску +7 (XXX) XXX-XX-XX */
+  function applyPhoneMask(raw) {
+    /* Оставляем только цифры, максимум 11 */
+    let digits = raw.replace(/\D/g, '');
+
+    /* 8 → 7 в начале */
+    if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+    /* Принудительно начинаем с 7 */
+    if (!digits.startsWith('7')) digits = '7' + digits;
+
+    digits = digits.slice(0, 11);
+
+    const d = digits.split('');
+    let mask = '+7';
+    if (d.length > 1)  mask += ' (' + d.slice(1, 4).join('');
+    if (d.length > 3)  mask += ')';
+    if (d.length > 4)  mask += ' ' + d.slice(4, 7).join('');
+    if (d.length > 6)  mask += '-' + d.slice(7, 9).join('');
+    if (d.length > 8)  mask += '-' + d.slice(9, 11).join('');
+
+    return mask;
   }
 
   if (smartContactInput) {
-    smartContactInput.addEventListener('input', () => {
-      const val  = smartContactInput.value;
-      const mode = detectMode(val);
+    smartContactInput.addEventListener('keydown', (e) => {
+      /* При Backspace в телефонном режиме — стираем цифру, а не разделитель */
+      if (e.key !== 'Backspace') return;
+      const val = smartContactInput.value;
+      if (!isPhoneMode(val)) return;
 
-      if (mode === 'phone') {
-        /* Оставляем только + в начале и цифры */
-        const cleaned = val.replace(/(?!^\+)[^\d]/g, '');
+      e.preventDefault();
+      const digits = val.replace(/\D/g, '');
+      const trimmed = digits.slice(0, -1);
+      smartContactInput.value = trimmed.length > 1
+        ? applyPhoneMask(trimmed)
+        : (trimmed === '7' ? '' : trimmed);
+      clearError();
+    });
+
+    smartContactInput.addEventListener('input', () => {
+      const val = smartContactInput.value;
+
+      if (isPhoneMode(val)) {
+        /* Телефонный режим — маска */
+        smartContactInput.maxLength = 18; /* +7 (XXX) XXX-XX-XX = 18 символов */
+        const masked = applyPhoneMask(val);
+        if (val !== masked) {
+          smartContactInput.value = masked;
+          /* Ставим курсор в конец */
+          smartContactInput.selectionStart = smartContactInput.selectionEnd = masked.length;
+        }
+      } else {
+        /* Текстовый режим (@ / ник / ссылка) */
+        smartContactInput.maxLength = 50;
+        /* Убираем запрещённые символы (оставляем буквы, цифры, @, _, ., /) */
+        const cleaned = val.replace(/[^a-zA-Zа-яёА-ЯЁ0-9@_.\/\-]/g, '');
         if (val !== cleaned) smartContactInput.value = cleaned;
       }
-      /* social — не фильтруем, разрешаем @, _, ., /, буквы, цифры */
+
       clearError();
     });
   }
 
   function validateContact(val) {
     if (!val) return 'Укажите контакт для связи';
-    const mode = detectMode(val);
 
-    if (mode === 'phone') {
+    if (isPhoneMode(val)) {
       const digits = val.replace(/\D/g, '');
       if (digits.length < 11) return 'Введите корректный номер (минимум 11 цифр)';
     } else {
@@ -409,6 +456,7 @@
     }
     return null;
   }
+
 
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
