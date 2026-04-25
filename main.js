@@ -6,115 +6,33 @@
 (function () {
   'use strict';
 
-  /* ─── CAMERA IRIS INTRO ───────────────────────────── */
-  (function irisIntro() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'iris-canvas';
-    Object.assign(canvas.style, {
-      position: 'fixed', inset: '0', zIndex: '99999',
-      width: '100%', height: '100%', pointerEvents: 'none',
-    });
-    document.body.prepend(canvas);
+  /* ─── CURTAIN INTRO ──────────────────────────────── */
+  (function curtainIntro() {
+    const el = document.getElementById('curtain-intro');
+    if (!el) return;
 
-    const ctx = canvas.getContext('2d');
-    let W, H, cx, cy, maxR;
+    /* Шаг 1: лого появляется пока шторки закрыты */
+    setTimeout(() => el.classList.add('logo-visible'), 120);
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      cx = W / 2; cy = H / 2;
-      maxR = Math.hypot(cx, cy) * 1.18;
-    }
-    resize();
+    /* Шаг 2: шторки раскрываются */
+    setTimeout(() => el.classList.add('is-open'), 500);
 
-    const N        = 16;   /* 16 лепестков */
-    const DURATION = 4200; /* мс */
+    /* Шаг 3: имя ШКУРЧЕНКО + Дмитрий вылетают снизу */
+    setTimeout(() => {
+      document.querySelectorAll('.hero-clip-line').forEach(line => {
+        line.classList.add('is-revealed');
+      });
+    }, 500 + 1100 + 80); /* delay curtain + 1100ms transition + buffer */
 
-    /*  Каждый кадр: [время(0-1), открытость(0-1), вращение(рад)]
-        Открытие → вращение растёт (кольцо вперёд)
-        Закрытие → вращение падает (кольцо назад)
-        Старт 0.22 — небольшая дыра, имя ШКУРЧЕНКО видно               */
-    const KEYS = [
-      [0.00, 0.22,  0.00],  /* дыра — имя видно                          */
-      [0.11, 0.22,  0.00],  /* ПАУЗА — смотрим на имя                    */
-      [0.24, 0.68,  2.60],  /* БАМ — резко открыли + кручение вперёд     */
-      [0.36, 0.18,  0.50],  /* ШАРК — резко закрыли + кручение назад     */
-      [0.50, 0.80,  4.20],  /* БАМ — ещё шире + вперёд                   */
-      [0.61, 0.30,  2.10],  /* ШАРК — закрыли + назад                    */
-      [0.76, 0.92,  6.00],  /* БАМ — почти полностью + вперёд            */
-      [0.86, 0.62,  4.40],  /* ШАРК — дёрнули назад                      */
-      [1.00, 1.00,  7.80],  /* ПОЛНОСТЬЮ открыто                         */
-    ];
-
-    /* БАМ — мгновенный удар, плавная остановка */
-    function easeOutExpo(x) { return x >= 1 ? 1 : 1 - Math.pow(2, -11 * x); }
-    /* ШАРК — медленный старт, резкий финал */
-    function easeInExpo(x)  { return x <= 0 ? 0 : Math.pow(2, 11 * x - 11); }
-
-    function interpolate(t) {
-      for (let i = 0; i < KEYS.length - 1; i++) {
-        const [t0, v0, r0] = KEYS[i];
-        const [t1, v1, r1] = KEYS[i + 1];
-        if (t <= t1) {
-          const seg   = (t - t0) / (t1 - t0);
-          const open  = v1 >= v0;
-          const eased = open ? easeOutExpo(seg) : easeInExpo(seg);
-          return {
-            open: v0 + (v1 - v0) * eased,
-            rot:  r0 + (r1 - r0) * eased,
-          };
-        }
-      }
-      const last = KEYS[KEYS.length - 1];
-      return { open: last[1], rot: last[2] };
-    }
-
-    /* Прямолинейный N-угольник с независимым углом вращения */
-    function drawIrisHole(openAmt, rotation) {
-      const r = maxR * openAmt;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const angle = (i / N) * Math.PI * 2 - Math.PI / 2 + rotation;
-        const x = cx + Math.cos(angle) * r;
-        const y = cy + Math.sin(angle) * r;
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-      ctx.closePath();
-    }
-
-    let startTime = null;
-    let done      = false;
-
-    function frame(ts) {
-      if (done) return;
-      if (!startTime) startTime = ts;
-
-      const raw           = Math.min((ts - startTime) / DURATION, 1);
-      const { open, rot } = interpolate(raw);
-
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = '#0e0e0e';
-      ctx.fillRect(0, 0, W, H);
-
-      if (open > 0.005) {
-        ctx.globalCompositeOperation = 'destination-out';
-        drawIrisHole(open, rot);
-        ctx.fill();
-        ctx.globalCompositeOperation = 'source-over';
-      }
-
-      if (raw < 1) {
-        requestAnimationFrame(frame);
-      } else {
-        done = true;
-        canvas.style.transition = 'opacity 0.3s ease';
-        canvas.style.opacity    = '0';
-        setTimeout(() => canvas.remove(), 320);
-      }
-    }
-
-    requestAnimationFrame(frame);
+    /* Шаг 4: убираем overlay */
+    setTimeout(() => {
+      el.style.transition = 'opacity 0.25s ease';
+      el.style.opacity    = '0';
+      setTimeout(() => el.remove(), 260);
+    }, 500 + 1100 + 220);
   })();
+
+
 
 
 

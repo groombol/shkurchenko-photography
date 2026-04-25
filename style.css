@@ -152,6 +152,68 @@ img {
 }
 
 /* ═══════════════════════════════════════════════
+   CURTAIN INTRO
+══════════════════════════════════════════════════ */
+#curtain-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+}
+
+.curtain {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #0e0e0e;
+  transition: transform 1.1s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.curtain--top    { top: 0;    transform: translateY(0); }
+.curtain--bottom { bottom: 0; transform: translateY(0); }
+
+#curtain-intro.is-open .curtain--top    { transform: translateY(-100%); }
+#curtain-intro.is-open .curtain--bottom { transform: translateY(100%);  }
+
+.curtain-logo-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#curtain-intro.logo-visible .curtain-logo-wrap { opacity: 1; }
+#curtain-intro.is-open      .curtain-logo-wrap { opacity: 0; transition-duration: 0.3s; }
+
+.curtain-logo {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO TITLE CLIP REVEAL
+══════════════════════════════════════════════════ */
+.hero-clip-wrap {
+  overflow: hidden;
+  /* Нет дополнительного line-height — наследуется от h1 */
+}
+
+.hero-clip-line {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-clip-line.is-revealed          { transform: translateY(0); }
+#hero-line-2.hero-clip-line          { transition-delay: 0.13s; }
+
+/* ═══════════════════════════════════════════════
    REVEAL ANIMATIONS (PREMIUM)
 ══════════════════════════════════════════════════ */
 .reveal-up,
