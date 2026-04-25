@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Шкурченко Дмитрий — Фотограф</title>
+  <meta name="description"
+    content="Шкурченко Дмитрий — профессиональный фотограф. Портреты, предметная, студийная и креативная съёмка. Открыт к работам по всему миру." />
+  <meta name="keywords"
+    content="фотограф Волгоград, профессиональный фотограф, портретная съемка, предметный фотограф, креативная фотосессия, студийная съемка, Шкурченко Дмитрий фотограф, заказать фотосессию, коммерческий фотограф, услуги фотографа" />
+  <link rel="icon" type="image/png" href="img/site-logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-left desktop-nav">
+        <a href="#philosophy" class="nav-link">ФИЛОСОФИЯ СЪЕМКИ</a>
+        <a href="#portfolio" class="nav-link" id="nav-portfolio">ПОРТФОЛИО</a>
+        <a href="#info" class="nav-link" id="nav-info">INFO &amp; FAQ</a>
+      </nav>
+
+      <div class="nav-logo">
+        <a href="#" aria-label="На главную">
+          <img src="img/site-logo.png" alt="Логотип" class="logo-img" id="site-logo" />
+        </a>
+      </div>
+
+      <div class="nav-social">
+        <a href="https://t.me/Grandad_Goose" class="social-link" id="social-telegram" aria-label="Telegram"
+          target="_blank">
+          <img src="img/telegram-logo.png" alt="Telegram" />
+        </a>
+        <a href="https://vk.com/grandad_goose" class="social-link" id="social-vk" aria-label="VK" target="_blank">
+          <img src="img/vk-logo.png" alt="VK" />
+        </a>
+        <a href="https://www.instagram.com/shkurchenko.ph/" class="social-link" id="social-instagram"
+          aria-label="Instagram" target="_blank">
+          <img src="img/instagram-logo.png" alt="Instagram" />
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="side-nav" id="side-nav">
+    <div class="side-nav-inner">
+      <a href="#philosophy" class="nav-link side-link sidebar-philosophy-link">ФИЛОСОФИЯ СЪЕМКИ</a>
+      <span class="nav-group-title">ПОРТФОЛИО</span>
+      <a href="#section-portraits" class="nav-link side-link"><span style="color: #FFB84D;">01.</span> Портреты</a>
+      <a href="#section-subject" class="nav-link side-link"><span style="color: #E0D6D1;">02.</span> Предметная</a>
+      <a href="#section-studio" class="nav-link side-link"><span style="color: #FF2A2A;">03.</span> Студия</a>
+      <a href="#section-creative" class="nav-link side-link"><span style="color: #FF9900;">04.</span> Креатив</a>
+      <div class="side-divider"></div>
+      <a href="#info" class="nav-link side-link">INFO &amp; FAQ</a>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="film-grain"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 class="hero-title" id="hero-title">
+          <span class="hero-title-line reveal-up">Шкурченко</span>
+          <span class="hero-title-line reveal-up delay-1">Дмитрий</span>
+        </h1>
+      </div>
+
+      <div class="hero-poem-wrap">
+        <div class="hero-poem reveal-left" id="hero-poem">
+          <p>Жизнь, как вода, — бежит и протекает,</p>
+          <p>Не позволяй ей течь на самотёк.</p>
+          <p>Пусть сердце каждый миг запоминает,</p>
+          <p>Оно само решит, куда направить твой поток.</p>
+        </div>
+      </div>
+
+      <div class="hero-coords-wrap">
+        <div class="hero-coords reveal-right" id="hero-coords">
+          48.671595, 44.478327
+        </div>
+      </div>
+    </div>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="27.5" fill="black" fill-opacity="0.8" stroke="#E0D6D1" stroke-width="1.5" />
+        <path d="M28 40V16" stroke="#E0D6D1" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M18 26L28 16L38 26" stroke="#E0D6D1" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </button>
+    <div class="scroll-indicator" id="scrollIndicator">
+      <span class="scroll-text">SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="philosophy-section" id="philosophy">
+    <div class="section-inner">
+      <div class="section-text reveal-left">
+        <h2 class="section-title philosophy-title-gradient">ФИЛОСОФИЯ СЪЕМКИ</h2>
+
+        <p class="section-desc">
+          Я не полагаюсь на случайные кадры и ожидание внезапного вдохновения. Классная фотография — это не магия, а
+          выверенный результат рабочего процесса.
+        </p>
+        <p class="section-desc">
+          Главный принцип — убрать из кадра лишнее, и оставить только суть. Идеальный продукт рождается там, где
+          комфорт встречается с качеством, это я и вложил в название.
+          <br> <strong><a href="#" class="manifesto-link" target="_blank">«Чистая эстетика формы»</a></strong> <img src="img/telegram-chanel-logo.png" alt="Telegram Channel" class="manifesto-icon" />
+        </p>
+        <p class="section-desc philosophy-desc-last">
+          Портрет, предметная съемка или сложный креатив — всегда зависят от конкретной задачи: показать
+          характер, выделить продукт или воплотить идею.
+        </p>
+
+        <p class="section-desc philosophy-manifesto">
+          <strong>МОЙ НЕПОКОЛЕБИМЫЙ МАНИФЕСТ. <br>ЦЕЛЬ. ЗАДАЧА. РЕЗУЛЬТАТ.</strong>
+        </p>
+
+        <div class="author-reveal-mobile" id="author-reveal-mobile">
+          <div class="author-reveal-track">
+            <div class="author-reveal-photo" id="author-reveal-photo">
+              <img src="img/author.jpg" alt="Дмитрий Шкурченко" loading="lazy" />
+            </div>
+          </div>
+          <button class="author-reveal-btn" id="author-reveal-btn">Я тут!</button>
+        </div>
+      </div>
+      <div class="philosophy-drawer reveal-right" id="philosophy-drawer">
+        <div class="drawer-photo-box">
+          <div class="drawer-gradient-border"></div>
+          <div class="drawer-photo-inner">
+            <img src="img/author.jpg" alt="Дмитрий Шкурченко" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="portfolio"></div>
+
+  <section class="portfolio-section section-portraits" id="section-portraits">
+    <div class="section-inner reverse">
+      <div class="section-text reveal-right">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Портреты</h2>
+        <p class="section-desc">
+          <strong>Живая фотография</strong> про вас настоящих — искренняя, стильная и без лишнего пафоса.
+          <br>Не нужно придумывать сложные роли или выдавливать улыбку, чтобы оставить вашу абсолютную
+          свободу быть собой, и для этого, я помогу поймать нужное настроение.
+        </p>
+        <a href="#" class="btn-outline gallery-btn" data-category="portraits">СМОТРЕТЬ</a>
+      </div>
+      <div class="section-gallery gallery-triptych reveal-left">
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-1.1.jpg" alt="Портрет 1" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--lg"><img src="img/IMG-1.2.jpg" alt="Портрет 2" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-1.3.jpg" alt="Портрет 3" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio-section section-subject" id="section-subject">
+    <div class="section-inner">
+      <div class="section-text reveal-left">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Предметная</h2>
+        <p class="section-desc">
+          <strong> Главное в кадре — продукт. </strong>
+          <br> Всё, что мешает зрителю его увидеть, убирается.
+          <br>Чистая эстетика без фальши и надуманной сложности. Это максимально выверенная съемка, которая честно
+          показывает работу всех сторон.
+        </p>
+        <a href="#" class="btn-outline gallery-btn" data-category="subject">СМОТРЕТЬ</a>
+      </div>
+      <div class="section-gallery gallery-grid reveal-right">
+        <div class="gallery-item"><img src="img/IMG-2.1.jpg" alt="Предметная 1" loading="lazy" /></div>
+        <div class="gallery-item"><img src="img/IMG-2.2.jpg" alt="Предметная 2" loading="lazy" /></div>
+        <div class="gallery-item"><img src="img/IMG-2.3.jpg" alt="Предметная 3" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio-section section-studio" id="section-studio">
+    <div class="section-inner reverse">
+      <div class="section-text reveal-right">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Студия</h2>
+        <p class="section-desc">
+          Место где царит <strong>полная свобода</strong> и ничего не мешает.
+          <br> Выдавливать эмоции и заставлять позировать это мертвый кадр
+          во всех смыслах. Отходим от любой скованности и просто ловим классные моменты в этом пространстве.
+          <br> Работая на студии получаем искренние и стильные кадры.
+        </p>
+        <a href="#" class="btn-outline gallery-btn" data-category="studio">СМОТРЕТЬ</a>
+      </div>
+      <div class="section-gallery gallery-triptych reveal-left">
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-3.1.jpg" alt="Студия 1" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--lg"><img src="img/IMG-3.2.jpg" alt="Студия 2" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-3.3.jpg" alt="Студия 3" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="portfolio-section section-creative" id="section-creative">
+    <div class="section-inner">
+      <div class="section-text reveal-left">
+        <span class="section-number">04</span>
+        <h2 class="section-title">КРЕАТИВ</h2>
+        <p class="section-desc">
+          Креативная съемка — это выход за рамки привычного портрета. Когда для крутой идеи мало стандартного подхода,
+          используется сложный свет, необычные локации и смелые концепции.
+          <br> Если задача требует создать атмосферу или
+          мир, которых не существует в реальности, можно подключить и <strong>искусственный интеллект</strong>.
+        </p>
+        <a href="#" class="btn-outline gallery-btn" data-category="creative">СМОТРЕТЬ</a>
+      </div>
+      <div class="section-gallery gallery-triptych reveal-right">
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-4.1.jpg" alt="Креатив 1" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--lg"><img src="img/IMG-4.2.jpg" alt="Креатив 2" loading="lazy" /></div>
+        <div class="gallery-item gallery-item--sm"><img src="img/IMG-4.3.jpg" alt="Креатив 3" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section" id="info">
+    <div class="info-bg-icons">
+      <img src="img/icon-ruble.png" alt="" class="bg-icon bg-icon--ruble" aria-hidden="true" />
+      <img src="img/icon-partnership.png" alt="" class="bg-icon bg-icon--partnership" aria-hidden="true" />
+      <img src="img/icon-document.png" alt="" class="bg-icon bg-icon--document" aria-hidden="true" />
+    </div>
+
+    <div class="info-inner">
+      <div class="info-block reveal-up" id="info-process">
+        <h2 class="info-title">КАК МЫ РАБОТАЕМ</h2>
+        <div class="info-divider"></div>
+        <div class="info-content process-list">
+          <div class="process-item">
+            <span class="process-num">01</span>
+            <p><strong>Концепция.</strong> Обсуждаем идею и референсы. Точный бюджет фиксируется после утверждения ТЗ
+              (от 3000 ₽ / час).</p>
+          </div>
+          <div class="process-item">
+            <span class="process-num">02</span>
+            <p><strong>Подготовка.</strong> Бронирование даты осуществляется по задатку. Подбираем локацию, свет и
+              образы.</p>
+          </div>
+          <div class="process-item">
+            <span class="process-num">03</span>
+            <p><strong>Съемка.</strong> Комфортный процесс под моим полным руководством и контролем технической
+              реализации.</p>
+          </div>
+          <div class="process-item">
+            <span class="process-num">04</span>
+            <p><strong>Результат.</strong> Отдача материала до 7 дней. Задачи, выходящие за рамки оговоренного объема,
+              обсуждаются отдельно.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-separator"></div>
+
+      <div class="info-block reveal-up delay-2" id="info-faq">
+        <h2 class="info-title">ЧАСТЫЕ ВОПРОСЫ</h2>
+        <div class="info-divider"></div>
+        <div class="info-content faq-list">
+          <div class="faq-item">
+            <button class="faq-btn">Что входит в базовую стоимость работы? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>В базовую стоимость входит все самое важное: мы вместе придумываем идею, подбираем крутую локацию и подходящие образы, проводим саму съемку, а затем я делаю финальную авторскую ретушь.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn">От чего зависит итоговый бюджет? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>В первую очередь от времени работы (от 3000 ₽/час) и сложности задумки. Если для идеальной картинки нам понадобятся услуги визажиста, стилиста или сложный реквизит — это обсуждается и оплачивается отдельно.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-btn">Кто оплачивает аренду студии и выезд? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Студию и билеты (если мы едем снимать за пределы Волгограда) оплачивает заказчик. Но я всегда помогаю все забронировать и найти самые лучшие варианты.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-btn">Отдаете ли вы исходники (RAW)? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Я отдаю только готовые, красивые фотографии. Исходники (RAW-файлы) — это технический «сырой» материал, который требует профессиональной проявки, поэтому я оставляю их себе.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn">Что будет при отмене съемки? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Если съемка отменяется по вашей инициативе, задаток, к сожалению, сгорает — он покрывает брони и мое зарезервированное время.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn">Можно ли заказать конфиденциальную съемку? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Без проблем! Если вы хотите оставить кадры только для себя и не светиться в моем портфолио — просто скажите об этом до съемки. Это полностью бесплатно.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn">Нужно ли мне искать визажиста и стилиста? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Вам не придется ничего искать. У меня есть своя команда проверенных мастеров макияжа и стиля. Если нужно — мы их подключим, и они сделают всё на высшем уровне.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-btn">Возможна ли срочная отдача материала? <span class="faq-icon">+</span></button>
+            <div class="faq-answer">
+              <p>Обычно я отдаю готовые фото за неделю. Но если кадры были нужны «еще вчера», мы всегда можем договориться о срочной обработке (1-2 дня) за небольшую доплату.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-cta reveal-up delay-3">
+      <a href="#" class="btn-contact" id="btn-contact">СВЯЗАТСЬЯ СО МНОЙ!</a>
+    </div>
+  </section>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-inner">
+      <p class="footer-tagline reveal-up">ОТКРЫТ К РАБОТАМ ПО ВСЕМУ МИРУ</p>
+      <div class="footer-social reveal-up delay-1">
+        <a href="https://t.me/Grandad_Goose" class="social-link" id="footer-telegram" aria-label="Telegram"
+          target="_blank">
+          <img src="img/telegram-logo.png" alt="Telegram" />
+        </a>
+        <a href="https://vk.com/grandad_goose" class="social-link" id="footer-vk" aria-label="VK" target="_blank">
+          <img src="img/vk-logo.png" alt="VK" />
+        </a>
+        <a href="https://www.instagram.com/shkurchenko.ph/" class="social-link" id="footer-instagram"
+          aria-label="Instagram" target="_blank">
+          <img src="img/instagram-logo.png" alt="Instagram" />
+        </a>
+      </div>
+      <p class="footer-copy reveal-up delay-2">© 2026 ШКУРЧЕНКО ДМИТРИЙ</p>
+    </div>
+  </footer>
+
+  <div class="gallery-modal" id="gallery-modal">
+    <div class="modal-content">
+      <img src="" alt="Gallery Image" class="modal-img" id="modal-img" />
+    </div>
+    <button class="modal-close" id="modal-close" aria-label="Закрыть">×</button>
+    <button class="modal-nav modal-prev" id="modal-prev" aria-label="Назад">‹</button>
+    <button class="modal-nav modal-next" id="modal-next" aria-label="Вперед">›</button>
+    <div class="modal-counter" id="modal-counter"></div>
+  </div>
+
+  <div class="contact-modal" id="contact-modal">
+    <button class="modal-close" id="contact-close" aria-label="Закрыть">×</button>
+    <div class="contact-form-wrapper">
+      <h3 class="contact-title">ОБСУДИТЬ ПРОЕКТ</h3>
+      <form class="contact-form" id="contact-form">
+        <input type="text" name="contact" class="contact-input" placeholder="Ваш контакт (Telegram, VK, телефон)..." required />
+        <select name="type" class="contact-input" required>
+          <option value="" disabled selected>Выберите тип съемки</option>
+          <option value="Портреты">Портреты</option>
+          <option value="Предметная">Предметная</option>
+          <option value="Студия">Студия</option>
+          <option value="Креатив">Креатив</option>
+        </select>
+        <textarea name="message" class="contact-input contact-textarea" placeholder="Ваша идея или пожелания..."></textarea>
+        <button type="submit" class="btn-outline contact-submit">ОТПРАВИТЬ ЗАЯВКУ</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
