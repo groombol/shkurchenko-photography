@@ -27,26 +27,23 @@
     }
     resize();
 
-    const N        = 9;    /* лепестков — больше = реалистичнее */
-    const HOLD     = 400;  /* пауза перед стартом, мс */
-    const DURATION = 3600; /* общая длительность, мс */
+    const N        = 15;   /* лепестков — 15 = максимально похоже на объектив */
+    const HOLD     = 300;  /* пауза, мс */
+    const DURATION = 2600; /* общая длительность, мс — короче = резче */
 
-    /*  Кастомная кривая с «дыханием»:
-        открывается → чуть прикрывается → снова открывается → чуть прикрывается → полностью
-        Каждый отрезок имеет свой ease-in-out                                            */
+    /* Ключевые кадры: одно прикрытие, потом резкое полное открытие */
     const KEYS = [
       [0.00, 0.00],
-      [0.32, 0.62],   /* быстро открылась до 62% */
-      [0.46, 0.44],   /* чуть прикрылась до 44% */
-      [0.62, 0.74],   /* снова открылась до 74% */
-      [0.76, 0.56],   /* ещё раз чуть прикрылась до 56% */
-      [1.00, 1.00],   /* плавно полностью открылась */
+      [0.28, 0.72],  /* быстрый бросок до 72%  */
+      [0.45, 0.48],  /* прикрылась до 48%       */
+      [1.00, 1.00],  /* резко открылась полностью */
     ];
 
-    function easeSegment(x) {
-      /* ease-in-out quadratic для каждого отрезка */
-      return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-    }
+    /* easeOutQuart — очень резкий старт, мгновенная остановка */
+    function easeOut(x) { return 1 - Math.pow(1 - x, 4); }
+
+    /* easeInQuart — резкий вход (для сжатия — выглядит механично) */
+    function easeIn(x) { return x * x * x * x; }
 
     function breatheCurve(t) {
       for (let i = 0; i < KEYS.length - 1; i++) {
@@ -54,38 +51,28 @@
         const [t1, v1] = KEYS[i + 1];
         if (t <= t1) {
           const seg = (t - t0) / (t1 - t0);
-          return v0 + (v1 - v0) * easeSegment(seg);
+          /* открытие — easeOut (удар), закрытие — easeIn (механика) */
+          const fn  = v1 > v0 ? easeOut : easeIn;
+          return v0 + (v1 - v0) * fn(seg);
         }
       }
       return 1;
     }
 
-    /*  Форма реальной диафрагмы: N-угольник с вогнутыми гранями.
-        Каждая грань — квадратичная кривая Безье с контрольной точкой,
-        утянутой к центру. Это создаёт характерный облик апертуры.     */
+    /*  ПРЯМОЛИНЕЙНЫЙ N-угольник.
+        Никаких кривых — только прямые грани, как у реальной диафрагмы.
+        Эффект лепестков создаётся вращением многоугольника.           */
     function drawIrisHole(openAmt) {
       const r        = maxR * openAmt;
-      const rotation = openAmt * (Math.PI / N); /* лёгкое вращение = эффект лепестков */
-      const concave  = 0.18;                    /* 0 = правильный N-угол, выше = вогнутее */
+      /* Быстрое вращение — чем заметнее, тем механичнее выглядит */
+      const rotation = openAmt * (Math.PI * 2 / N) * 0.8;
 
       ctx.beginPath();
-      for (let i = 0; i < N; i++) {
-        const a1 = (i / N)       * Math.PI * 2 - Math.PI / 2 + rotation;
-        const a2 = ((i + 1) / N) * Math.PI * 2 - Math.PI / 2 + rotation;
-
-        const x1 = cx + Math.cos(a1) * r;
-        const y1 = cy + Math.sin(a1) * r;
-        const x2 = cx + Math.cos(a2) * r;
-        const y2 = cy + Math.sin(a2) * r;
-
-        /* Контрольная точка вогнута внутрь */
-        const aMid = (a1 + a2) / 2;
-        const cpR  = r * (1 - concave);
-        const cpX  = cx + Math.cos(aMid) * cpR;
-        const cpY  = cy + Math.sin(aMid) * cpR;
-
-        if (i === 0) ctx.moveTo(x1, y1);
-        ctx.quadraticCurveTo(cpX, cpY, x2, y2);
+      for (let i = 0; i <= N; i++) {
+        const angle = (i / N) * Math.PI * 2 - Math.PI / 2 + rotation;
+        const x = cx + Math.cos(angle) * r;
+        const y = cy + Math.sin(angle) * r;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.closePath();
     }
@@ -101,12 +88,10 @@
       const raw     = elapsed < 0 ? 0 : Math.min(elapsed / DURATION, 1);
       const openAmt = breatheCurve(raw);
 
-      /* Чёрный фон */
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#0e0e0e';
       ctx.fillRect(0, 0, W, H);
 
-      /* Вырезаем отверстие диафрагмы */
       if (openAmt > 0.005) {
         ctx.globalCompositeOperation = 'destination-out';
         drawIrisHole(openAmt);
@@ -118,14 +103,15 @@
         requestAnimationFrame(frame);
       } else {
         done = true;
-        canvas.style.transition = 'opacity 0.4s ease';
+        canvas.style.transition = 'opacity 0.3s ease';
         canvas.style.opacity    = '0';
-        setTimeout(() => canvas.remove(), 420);
+        setTimeout(() => canvas.remove(), 320);
       }
     }
 
     requestAnimationFrame(frame);
   })();
+
 
 
   const galleries = {
