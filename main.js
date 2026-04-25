@@ -362,14 +362,67 @@
     }
   });
 
+  /* ─── SMART CONTACT VALIDATION & SUBMIT ──────────── */
+  const smartContactInput = document.getElementById('smart-contact');
+  const contactError      = document.getElementById('contact-error');
+
+  function showError(msg) {
+    if (contactError) { contactError.textContent = msg; contactError.classList.add('visible'); }
+    if (smartContactInput) smartContactInput.classList.add('contact-input--error');
+  }
+
+  function clearError() {
+    if (contactError) { contactError.textContent = ''; contactError.classList.remove('visible'); }
+    if (smartContactInput) smartContactInput.classList.remove('contact-input--error');
+  }
+
+  /* Определяем тип ввода: phone (начинается с + или цифры) | social (всё остальное) */
+  function detectMode(val) {
+    return /^[+\d]/.test(val) ? 'phone' : 'social';
+  }
+
+  if (smartContactInput) {
+    smartContactInput.addEventListener('input', () => {
+      const val  = smartContactInput.value;
+      const mode = detectMode(val);
+
+      if (mode === 'phone') {
+        /* Оставляем только + в начале и цифры */
+        const cleaned = val.replace(/(?!^\+)[^\d]/g, '');
+        if (val !== cleaned) smartContactInput.value = cleaned;
+      }
+      /* social — не фильтруем, разрешаем @, _, ., /, буквы, цифры */
+      clearError();
+    });
+  }
+
+  function validateContact(val) {
+    if (!val) return 'Укажите контакт для связи';
+    const mode = detectMode(val);
+
+    if (mode === 'phone') {
+      const digits = val.replace(/\D/g, '');
+      if (digits.length < 11) return 'Введите корректный номер (минимум 11 цифр)';
+    } else {
+      const clean = val.replace(/^[@\/]|t\.me\/|vk\.com\//gi, '').trim();
+      if (clean.length < 3) return 'Слишком короткий никнейм (минимум 3 символа)';
+    }
+    return null;
+  }
+
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const data    = new FormData(contactForm);
-      const contact = data.get('contact')?.trim() || '—';
+      const contact = data.get('contact')?.trim() || '';
       const type    = data.get('type')  || '—';
       const message = data.get('message')?.trim() || 'не указаны';
+
+      /* Валидация контакта */
+      const validationError = validateContact(contact);
+      if (validationError) { showError(validationError); smartContactInput?.focus(); return; }
+      clearError();
 
       const submitBtn = contactForm.querySelector('.contact-submit');
       const origText  = submitBtn.textContent;
@@ -387,6 +440,7 @@
 
         submitBtn.textContent = 'ОТПРАВЛЕНО!';
         contactForm.reset();
+        clearError();
         setTimeout(() => {
           closeContactModal();
           setTimeout(() => {

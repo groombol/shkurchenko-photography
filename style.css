@@ -1419,6 +1419,35 @@ img {
   min-height: 120px;
 }
 
+.contact-field-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.contact-error {
+  font-family: var(--font-main);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #ff6b6b;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-height 0.25s ease, padding 0.25s ease;
+  padding: 0 4px;
+}
+
+.contact-error.visible {
+  opacity: 1;
+  max-height: 40px;
+  padding: 5px 4px 0;
+}
+
+.contact-input--error {
+  border-color: #ff6b6b !important;
+}
+
 .contact-submit {
   width: 100%;
   margin-top: 10px;
