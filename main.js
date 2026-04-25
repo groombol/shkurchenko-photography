@@ -11,8 +11,8 @@
     const el = document.getElementById('curtain-intro');
     if (!el) return;
 
-    const LOGO_APPEAR   = 150;   /* лого появляется через, мс */
-    const CURTAIN_OPEN  = 1100;  /* шторки начинают открываться через, мс (лого видно ~950мс) */
+    const LOGO_APPEAR = 150;   /* лого появляется через, мс */
+    const CURTAIN_OPEN = 1100;  /* шторки начинают открываться через, мс (лого видно ~950мс) */
     const TRAN_DURATION = 1400;  /* длительность раскрытия шторок, мс */
 
     /* Перебиваем CSS-transition динамически */
@@ -21,7 +21,7 @@
     });
 
     setTimeout(() => el.classList.add('logo-visible'), LOGO_APPEAR);
-    setTimeout(() => el.classList.add('is-open'),      CURTAIN_OPEN);
+    setTimeout(() => el.classList.add('is-open'), CURTAIN_OPEN);
 
     const textAt = CURTAIN_OPEN + TRAN_DURATION + 80;
     setTimeout(() => {
@@ -30,7 +30,7 @@
 
     setTimeout(() => {
       el.style.transition = 'opacity 0.3s ease';
-      el.style.opacity    = '0';
+      el.style.opacity = '0';
       setTimeout(() => el.remove(), 320);
     }, textAt + 160);
   })();
@@ -44,9 +44,9 @@
 
   const galleries = {
     portraits: ['img/IMG-1.1.jpg', 'img/IMG-1.2.jpg', 'img/IMG-1.3.jpg'],
-    subject:   ['img/IMG-2.1.jpg', 'img/IMG-2.2.jpg', 'img/IMG-2.3.jpg', 'img/IMG-2.4.jpg'],
-    studio:    ['img/IMG-3.1.jpg', 'img/IMG-3.2.jpg', 'img/IMG-3.3.jpg', 'img/IMG-3.4.jpg', 'img/IMG-3.5.jpg', 'img/IMG-3.6.jpg'],
-    creative:  ['img/IMG-4.1.jpg', 'img/IMG-4.2.jpg', 'img/IMG-4.3.jpg', 'img/IMG-4.4.jpg', 'img/IMG-4.5.jpg', 'img/IMG-4.6.jpg']
+    subject: ['img/IMG-2.1.jpg', 'img/IMG-2.2.jpg', 'img/IMG-2.3.jpg', 'img/IMG-2.4.jpg'],
+    studio: ['img/IMG-3.1.jpg', 'img/IMG-3.2.jpg', 'img/IMG-3.3.jpg', 'img/IMG-3.4.jpg', 'img/IMG-3.5.jpg', 'img/IMG-3.6.jpg'],
+    creative: ['img/IMG-4.1.jpg', 'img/IMG-4.2.jpg', 'img/IMG-4.3.jpg', 'img/IMG-4.4.jpg', 'img/IMG-4.5.jpg', 'img/IMG-4.6.jpg']
   };
 
   /* ─── ЗАЩИТА ОТ КОНТЕКСТНОГО МЕНЮ ────────────────── */
@@ -70,7 +70,7 @@
 
   window.addEventListener('scroll', () => {
     const currentScroll = window.scrollY;
-    
+
     let forceShow = false;
     if (infoSection) {
       const rect = infoSection.getBoundingClientRect();
@@ -102,8 +102,8 @@
     if (menuBtn) {
       const spans = menuBtn.querySelectorAll('span');
       if (spans.length === 3) {
-        spans[0].style.transform = 'none'; 
-        spans[1].style.opacity = '1'; 
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
         spans[2].style.transform = 'none';
       }
     }
@@ -155,7 +155,7 @@
       hideSidebarTimeout = setTimeout(closeSidebar, 300);
     });
   }
-  
+
   if (navOverlay) {
     const handleOverlayClose = (e) => {
       e.preventDefault();
@@ -176,7 +176,7 @@
     const docHeight = document.documentElement.scrollHeight;
     const winHeight = window.innerHeight;
     const isAtBottom = (currentY + winHeight) >= (docHeight - 60);
-    
+
     if (scrollingUp && currentY >= 200 && !isAtBottom) {
       scrollBtn.classList.add('visible');
     } else {
@@ -190,7 +190,7 @@
     if (!ticking) { requestAnimationFrame(updateScrollBtn); ticking = true; }
   }, { passive: true });
 
-  if(scrollBtn) {
+  if (scrollBtn) {
     scrollBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -225,13 +225,13 @@
       if (targetId === '#') return;
       const target = document.querySelector(targetId);
       if (!target) return;
-      
+
       e.preventDefault();
       closeSidebar();
 
       setTimeout(() => {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50); 
+      }, 50);
     });
   });
 
@@ -268,7 +268,7 @@
       e.stopPropagation();
       philosophyDrawer.classList.toggle('is-open');
     });
-    
+
     document.addEventListener('click', (e) => {
       if (!philosophyDrawer.contains(e.target) && philosophyDrawer.classList.contains('is-open')) {
         philosophyDrawer.classList.remove('is-open');
@@ -289,12 +289,12 @@
     currentIndex = 0;
     updateModalImage(0);
     galleryModal.classList.add('active');
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
   }
 
   function closeGalleryModal() {
     galleryModal.classList.remove('active');
-    document.body.style.overflow = ''; 
+    document.body.style.overflow = '';
   }
 
   function updateModalImage(direction = 0) {
@@ -302,7 +302,7 @@
     modalImg.style.opacity = '0';
     if (direction === 1) modalImg.style.transform = 'translateX(100px)';
     else if (direction === -1) modalImg.style.transform = 'translateX(-100px)';
-    
+
     modalImg.src = currentGallery[currentIndex];
     modalCounter.textContent = `${currentIndex + 1} / ${currentGallery.length}`;
 
@@ -330,7 +330,7 @@
   const modalPrevBtn = document.getElementById('modal-prev');
 
   const bindModalButton = (btn, action) => {
-    if(!btn) return;
+    if (!btn) return;
     btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); action(); });
     btn.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); action(); }, { passive: false });
   };
@@ -342,11 +342,11 @@
   /* Убрали закрытие модалки при клике вне фото */
 
   let touchStartX = 0, currentX = 0, isDragging = false;
-  if(galleryModal) {
+  if (galleryModal) {
     galleryModal.addEventListener('touchstart', (e) => {
       if (e.target.closest('.modal-nav') || e.target.closest('.modal-close')) return;
       touchStartX = e.touches[0].clientX; isDragging = true;
-      modalImg.style.transition = 'none'; 
+      modalImg.style.transition = 'none';
     }, { passive: true });
 
     galleryModal.addEventListener('touchmove', (e) => {
@@ -372,7 +372,7 @@
   const contactForm = document.getElementById('contact-form');
 
   function openContactModal(e) {
-    if(e) e.preventDefault();
+    if (e) e.preventDefault();
     contactModal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -404,7 +404,7 @@
 
   /* ─── SMART CONTACT INPUT (МАСКА + ВАЛИДАЦИЯ) ─────── */
   const smartContactInput = document.getElementById('smart-contact');
-  const contactError      = document.getElementById('contact-error');
+  const contactError = document.getElementById('contact-error');
 
   function showError(msg) {
     if (contactError) { contactError.textContent = msg; contactError.classList.add('visible'); }
@@ -435,11 +435,11 @@
 
     const d = digits.split('');
     let mask = '+7';
-    if (d.length > 1)  mask += ' (' + d.slice(1, 4).join('');
-    if (d.length > 3)  mask += ')';
-    if (d.length > 4)  mask += ' ' + d.slice(4, 7).join('');
-    if (d.length > 6)  mask += '-' + d.slice(7, 9).join('');
-    if (d.length > 8)  mask += '-' + d.slice(9, 11).join('');
+    if (d.length > 1) mask += ' (' + d.slice(1, 4).join('');
+    if (d.length > 3) mask += ')';
+    if (d.length > 4) mask += ' ' + d.slice(4, 7).join('');
+    if (d.length > 6) mask += '-' + d.slice(7, 9).join('');
+    if (d.length > 8) mask += '-' + d.slice(9, 11).join('');
 
     return mask;
   }
@@ -475,8 +475,8 @@
       } else {
         /* Текстовый режим (@ / ник / ссылка) */
         smartContactInput.maxLength = 50;
-        /* Убираем запрещённые символы (оставляем буквы, цифры, @, _, ., /) */
-        const cleaned = val.replace(/[^a-zA-Zа-яёА-ЯЁ0-9@_.\/\-]/g, '');
+        /* Убираем кириллицу, пробелы и мусор. Оставляем только латиницу, цифры и ссылки. */
+        const cleaned = val.replace(/[^a-zA-Z0-9@_.\/\-:]/g, '');
         if (val !== cleaned) smartContactInput.value = cleaned;
       }
 
@@ -491,8 +491,28 @@
       const digits = val.replace(/\D/g, '');
       if (digits.length < 11) return 'Введите корректный номер (минимум 11 цифр)';
     } else {
-      const clean = val.replace(/^[@\/]|t\.me\/|vk\.com\//gi, '').trim();
-      if (clean.length < 3) return 'Слишком короткий никнейм (минимум 3 символа)';
+      // 1. Проверка на кириллицу (контрольный выстрел)
+      if (/[а-яё]/i.test(val)) return 'Кириллица запрещена форматом Telegram/VK';
+
+      // 2. Проверка на пробелы
+      if (/\s/.test(val)) return 'Ссылки и теги не должны содержать пробелов';
+
+      // 3. Идентификация паттерна
+      const isTag = val.startsWith('@');
+      const isLink = /t\.me\/|vk\.com\//i.test(val);
+
+      if (!isTag && !isLink) {
+        return 'Формат неверный. Укажите номер, @никнейм или ссылку';
+      }
+
+      // 4. Очистка от мусора для проверки самого никнейма
+      const clean = val.replace(/^[@\/]|https?:\/\/|t\.me\/|vk\.com\//gi, '');
+
+      // 5. Проверка длины (отсекает огрызки типа @a)
+      if (clean.length < 3) return 'Слишком короткий никнейм';
+
+      // 6. Защита от странных спецсимволов
+      if (/[^a-zA-Z0-9_.\-]/.test(clean)) return 'В никнейме есть недопустимые символы';
     }
     return null;
   }
@@ -502,9 +522,9 @@
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const data    = new FormData(contactForm);
+      const data = new FormData(contactForm);
       const contact = data.get('contact')?.trim() || '';
-      const type    = data.get('type')  || '—';
+      const type = data.get('type') || '—';
       const message = data.get('message')?.trim() || 'не указаны';
 
       /* Валидация контакта */
@@ -513,8 +533,8 @@
       clearError();
 
       const submitBtn = contactForm.querySelector('.contact-submit');
-      const origText  = submitBtn.textContent;
-      submitBtn.disabled    = true;
+      const origText = submitBtn.textContent;
+      submitBtn.disabled = true;
       submitBtn.textContent = 'ОТПРАВКА...';
 
       try {
@@ -532,7 +552,7 @@
         setTimeout(() => {
           closeContactModal();
           setTimeout(() => {
-            submitBtn.disabled    = false;
+            submitBtn.disabled = false;
             submitBtn.textContent = origText;
           }, 400);
         }, 1500);
@@ -541,7 +561,7 @@
         console.error('[form send error]', err);
         submitBtn.textContent = 'ОШИБКА!';
         setTimeout(() => {
-          submitBtn.disabled    = false;
+          submitBtn.disabled = false;
           submitBtn.textContent = origText;
         }, 2000);
       }
@@ -594,13 +614,13 @@
   faqItems.forEach(item => {
     const btn = item.querySelector('.faq-btn');
     const answer = item.querySelector('.faq-answer');
-    if(btn && answer) {
+    if (btn && answer) {
       btn.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
         faqItems.forEach(otherItem => {
           otherItem.classList.remove('active');
           const otherAnswer = otherItem.querySelector('.faq-answer');
-          if(otherAnswer) otherAnswer.style.maxHeight = null;
+          if (otherAnswer) otherAnswer.style.maxHeight = null;
         });
         if (!isActive) {
           item.classList.add('active');
