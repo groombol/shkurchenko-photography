@@ -6,6 +6,92 @@
 (function () {
   'use strict';
 
+  /* ─── CAMERA IRIS INTRO ───────────────────────────── */
+  (function irisIntro() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'iris-canvas';
+    Object.assign(canvas.style, {
+      position: 'fixed', inset: '0', zIndex: '99999',
+      width: '100%', height: '100%', pointerEvents: 'none',
+    });
+    document.body.prepend(canvas);
+
+    const ctx  = canvas.getContext('2d');
+    let W, H, cx, cy, maxR;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      cx = W / 2; cy = H / 2;
+      maxR = Math.hypot(cx, cy) * 1.15;
+    }
+    resize();
+
+    const N        = 6;       /* лепестков */
+    const HOLD     = 350;     /* пауза до начала открытия (мс) */
+    const DURATION = 1700;    /* длительность открытия (мс) */
+
+    /* easeOutExpo — быстрый старт, плавное завершение */
+    function ease(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+    /* Рисуем форму диафрагмы как звёздный полигон.
+       Внешние точки = «лепестки», внутренние = «перехваты между лепестками».
+       Форма растёт и вращается → визуальный эффект затвора. */
+    function drawIrisHole(t) {
+      const rotation = t * (Math.PI / N);   /* вращение по мере открытия */
+      const outerR   = maxR * t;
+      const innerR   = outerR * 0.52;       /* глубина «зазубрин» лепестков */
+      const pts      = N * 2;
+
+      ctx.beginPath();
+      for (let i = 0; i < pts; i++) {
+        const angle = (i / pts) * Math.PI * 2 - Math.PI / 2 + rotation;
+        const r     = (i % 2 === 0) ? outerR : innerR;
+        const x     = cx + Math.cos(angle) * r;
+        const y     = cy + Math.sin(angle) * r;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+    }
+
+    let startTime = null;
+    let done      = false;
+
+    function frame(ts) {
+      if (done) return;
+      if (!startTime) startTime = ts;
+
+      const elapsed = ts - startTime - HOLD;
+      const raw     = elapsed < 0 ? 0 : Math.min(elapsed / DURATION, 1);
+      const t       = ease(raw);
+
+      /* 1. Заливаем чёрным */
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#0e0e0e';
+      ctx.fillRect(0, 0, W, H);
+
+      /* 2. Вырезаем отверстие диафрагмы */
+      if (t > 0) {
+        ctx.globalCompositeOperation = 'destination-out';
+        drawIrisHole(t);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      if (raw < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        /* Диафрагма полностью открылась — плавно убираем canvas */
+        done = true;
+        canvas.style.transition = 'opacity 0.35s ease';
+        canvas.style.opacity    = '0';
+        setTimeout(() => canvas.remove(), 380);
+      }
+    }
+
+    requestAnimationFrame(frame);
+  })();
+
 
   const galleries = {
     portraits: ['img/IMG-1.1.jpg', 'img/IMG-1.2.jpg', 'img/IMG-1.3.jpg'],
