@@ -662,7 +662,7 @@ img {
 }
 
 .scroll-top-btn:hover svg {
-  filter: drop-shadow(0 0 12px rgba(217, 228, 238, 0.65));
+  filter: drop-shadow(0 0 8px rgba(224, 214, 209, 0.8));
 }
 
 .scroll-top-btn.visible {
@@ -779,17 +779,17 @@ img {
   height: 3px;
   position: relative;
   border-radius: 2px;
-  /* Градиентный фон — сама рамка */
   background: linear-gradient(90deg, var(--color-manifesto-1), var(--color-manifesto-2), var(--color-manifesto-1), var(--color-manifesto-2));
   background-size: 300% 100%;
   animation: manifestoGradientStream 3s linear infinite;
-  transition: height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: height 0.7s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+  max-height: 3px;
 }
 
 .author-reveal-track.is-open {
-  /* 280px фото + 1px верхняя рамка + 1px нижняя = 282px, но overflow:hidden обрежет снизу */
   height: 282px;
+  max-height: 282px;
 }
 
 /* Фото внутри трека — на 1px от краёв, чтобы была видна рамка */
@@ -1062,7 +1062,7 @@ img {
 /* ─── ЗАГОЛОВКИ ПОРТФОЛИО (Чистая эстетика формы) ─── */
 .section-title {
   font-family: var(--font-deco);
-  font-size: clamp(28px, 3.8vw, 50px);
+  font-size: 42px !important;
   letter-spacing: 0.12em;
   color: var(--color-white);
   margin-bottom: 24px;
@@ -1791,7 +1791,48 @@ img {
   .author-reveal-mobile {
     display: block;
     margin-top: 16px;
-    margin-bottom: 40px;
+    margin-bottom: 0;
+  }
+
+  /* Переопределяем трек для мобильных — используем max-height вместо height */
+  .author-reveal-track {
+    height: auto !important;
+    max-height: 0 !important;
+    padding: 0;
+    transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .author-reveal-track.is-open {
+    max-height: 100vw !important;
+    height: auto !important;
+  }
+
+  /* Фото внутри трека на мобильных — квадратное и без жёсткой высоты */
+  .author-reveal-photo {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    height: 0 !important;
+    width: 100%;
+    padding-bottom: 100%; /* aspect-ratio 1:1 trick */
+    opacity: 1 !important;
+    transform: none !important;
+    overflow: hidden;
+    transition: none !important;
+  }
+
+  .author-reveal-photo img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .author-reveal-photo.is-open {
+    /* Уже виден через max-height трека */
   }
 
   .author-reveal-btn {
@@ -1803,24 +1844,23 @@ img {
     font-size: 26px;
   }
 
-  .author-reveal-track.is-open,
-  .author-reveal-photo.is-open {
-    aspect-ratio: 1 / 1;
-    height: auto !important;
+  /* Уменьшаем отступ в низу секции философии */
+  .philosophy-section {
+    padding-bottom: 30px !important;
   }
 
   .philosophy-section h2.section-title,
   .philosophy-title-gradient {
     max-width: 250px;
-    font-size: 22px !important;
-    letter-spacing: 0.18em !important;
+    font-size: 38px !important;
+    letter-spacing: 0.12em !important;
   }
 
   .portfolio-section h2.section-title,
   h2.section-title,
   .section-title {
-    font-size: 22px !important;
-    letter-spacing: 0.18em !important;
+    font-size: 38px !important;
+    letter-spacing: 0.12em !important;
   }
 
   .section-gallery {
