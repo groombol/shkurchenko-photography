@@ -1800,7 +1800,7 @@ img {
   .author-reveal-track {
     height: auto !important;
     max-height: 4px !important; /* Оставляем 4px как намек на контент */
-    padding: 0;
+    padding: 1px; /* Показываем переливающуюся рамку */
     transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
