@@ -661,8 +661,10 @@ img {
   transition: filter var(--transition-fast);
 }
 
-.scroll-top-btn:hover svg {
-  filter: drop-shadow(0 0 8px rgba(224, 214, 209, 0.8));
+@media (hover: hover) {
+  .scroll-top-btn:hover svg {
+    filter: drop-shadow(0 0 8px rgba(224, 214, 209, 0.8));
+  }
 }
 
 .scroll-top-btn.visible {
@@ -1794,10 +1796,10 @@ img {
     margin-bottom: 0;
   }
 
-  /* Переопределяем трек для мобильных — используем max-height вместо height */
+  /* Переопределяем трек для мобильных — используем max-height для анимации */
   .author-reveal-track {
     height: auto !important;
-    max-height: 0 !important;
+    max-height: 4px !important; /* Оставляем 4px как намек на контент */
     padding: 0;
     transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
@@ -1852,14 +1854,14 @@ img {
   .philosophy-section h2.section-title,
   .philosophy-title-gradient {
     max-width: 250px;
-    font-size: 38px !important;
+    font-size: 32px !important;
     letter-spacing: 0.12em !important;
   }
 
   .portfolio-section h2.section-title,
   h2.section-title,
   .section-title {
-    font-size: 38px !important;
+    font-size: 32px !important;
     letter-spacing: 0.12em !important;
   }
 
