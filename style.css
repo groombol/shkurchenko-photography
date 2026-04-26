@@ -323,7 +323,7 @@ img {
 
 .nav-link {
   font-family: var(--font-deco);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.18em;
   color: var(--color-white);
   position: relative;
@@ -448,7 +448,7 @@ img {
 
 .nav-group-title {
   font-family: var(--font-deco);
-  font-size: 24px;
+  font-size: 22px;
   letter-spacing: 0.2em;
   color: var(--color-gold);
   opacity: 0.8;
@@ -459,9 +459,26 @@ img {
   font-size: 16px;
 }
 
+/* ─── ШРИФТЫ И ЛИНИИ БОКОВОГО МЕНЮ ─── */
+.sidebar-main-link,
+.nav-group-title {
+  font-size: 22px !important;
+  letter-spacing: 0.15em;
+}
+
+.side-divider {
+  width: 100%;
+  align-self: stretch;
+  /* Линия автоматически равняется по самому длинному тексту */
+  height: 1px;
+  background: var(--color-cream);
+  opacity: 0.2;
+  margin: 12px 0;
+}
+
 .sidebar-philosophy-link {
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 16px;
   opacity: 0.8;
   letter-spacing: 0.18em;
 }
@@ -1029,26 +1046,31 @@ img {
 }
 
 .section-number {
-  font-family: var(--font-deco);
-  font-size: 11px;
-  letter-spacing: 0.3em;
+  display: inline;
+  /* Ставим цифру в один ряд с текстом */
+  font-size: inherit;
+  letter-spacing: inherit;
   color: var(--theme-color);
-  display: block;
-  margin-bottom: 12px;
-  opacity: 0.9;
-  position: relative;
-  z-index: 1;
+  /* Цифра берет цвет секции (оранжевый/красный) */
+  margin-right: 12px;
 }
 
+/* ─── ОБНОВЛЕННЫЕ ЗАГОЛОВКИ ПОРТФОЛИО ─── */
 .section-title {
   font-family: var(--font-deco);
   font-size: clamp(32px, 4vw, 54px);
   font-weight: 400;
   letter-spacing: 0.12em;
-  color: var(--theme-color);
+  color: var(--color-white);
+  /* Текст теперь белый, как на макете */
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
+  display: inline-block;
+  /* Ширина ровно по тексту */
+  border-bottom: 1px solid rgba(224, 214, 209, 0.4);
+  /* Линия подчеркивания */
+  padding-bottom: 12px;
 }
 
 .section-desc {
@@ -1216,20 +1238,24 @@ img {
   flex: 1;
 }
 
+/* ─── ОБНОВЛЕННЫЕ ЛИНИИ ДЛЯ INFO & FAQ ─── */
 .info-title {
   font-family: var(--font-deco);
-  font-size: 15px;
+  font-size: 22px;
+  /* Увеличен размер */
   letter-spacing: 0.18em;
   color: var(--color-dark);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  display: inline-block;
+  /* Блок сжимается ровно до длины текста */
+  border-bottom: 1px solid rgba(17, 17, 17, 0.4);
+  /* Линия подчеркивания */
+  padding-bottom: 8px;
 }
 
 .info-divider {
-  width: 100px;
-  height: 1px;
-  background: var(--color-dark);
-  margin-bottom: 24px;
-  opacity: 0.35;
+  display: none;
+  /* Убиваем старые кривые линии */
 }
 
 .info-content p {
