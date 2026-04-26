@@ -1438,6 +1438,22 @@ img {
   backdrop-filter: blur(10px);
 }
 
+.contact-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.input-name {
+  flex: 0.7;
+  /* Поле имени короче */
+}
+
+.input-contact {
+  flex: 1.3;
+  /* Поле контакта длиннее */
+}
+
 .contact-modal.active {
   opacity: 1;
   visibility: visible;
@@ -1617,6 +1633,11 @@ img {
   .portfolio-section,
   .philosophy-section {
     padding: 100px 40px;
+  }
+
+  .contact-row {
+    flex-direction: column;
+    gap: 20px;
   }
 
   .section-inner {

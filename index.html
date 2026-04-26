@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Шкурченко Дмитрий — Фотограф</title>
+  <title>Дмитрий Шкурченко | Фотограф</title>
   <meta name="description"
     content="Дмитрий Шкурченко — профессиональный фотограф. Чистая эстетика формы: портретная, предметная и креативная съёмка. Открыт к проектам по всему миру." />
   <meta name="keywords"
@@ -383,10 +383,14 @@
     <div class="contact-form-wrapper">
       <h3 class="contact-title">ОБСУДИТЬ ПРОЕКТ</h3>
       <form class="contact-form" id="contact-form">
-        <div class="contact-field-wrap">
-          <input type="text" id="smart-contact" name="contact" class="contact-input"
-            placeholder="Ваш контакт (Телефон, @Telegram, @VK)..." autocomplete="off" maxlength="50" required />
-          <span class="contact-error" id="contact-error" aria-live="polite"></span>
+        <div class="contact-row">
+          <input type="text" name="user_name" class="contact-input input-name" placeholder="Ваше имя" autocomplete="off"
+            maxlength="20" required />
+          <div class="contact-field-wrap input-contact">
+            <input type="text" id="smart-contact" name="contact" class="contact-input"
+              placeholder="Телефон, @Telegram, @VK..." autocomplete="off" maxlength="50" required />
+            <span class="contact-error" id="contact-error" aria-live="polite"></span>
+          </div>
         </div>
         <select name="type" class="contact-input" required>
           <option value="" disabled selected>Выберите тип съемки</option>

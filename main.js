@@ -519,9 +519,10 @@
       e.preventDefault();
 
       const data = new FormData(contactForm);
+      const userName = data.get('user_name')?.trim() || 'Не указано';
       const contact = data.get('contact')?.trim() || '';
       const type = data.get('type') || '—';
-      const message = data.get('message')?.trim() || 'не указаны';
+      const message = data.get('message')?.trim() || 'Нет комментария';
 
       /* Валидация контакта */
       const validationError = validateContact(contact);
@@ -533,11 +534,28 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'ОТПРАВКА...';
 
+      // КОНФИГУРАЦИЯ TELEGRAM API (ВСТАВЬ СВОИ ДАННЫЕ)
+      const TOKEN = "8183051479:AAGc-p9mwLZtJXcV_yNAAa4ZB9dswBlRpwA";
+      const CHAT_ID = "958365774";
+      const URL = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+      const fullMessage = `
+📩 **Новая заявка: Shkurchenko.ru**
+👤 Имя: ${userName}
+🔗 Контакт: ${contact}
+📸 Тип съемки: ${type}
+💬 Комментарий: ${message}
+      `;
+
       try {
-        const res = await fetch('/.netlify/functions/telegram', {
+        const res = await fetch(URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contact, type, message }),
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: fullMessage,
+            parse_mode: 'Markdown'
+          })
         });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
