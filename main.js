@@ -273,19 +273,20 @@
     authorRevealBtn.addEventListener('click', () => {
       const isOpen = authorRevealPhoto.classList.contains('is-open');
       if (isOpen) {
+        /* Все закрывается моментально и синхронно */
         authorRevealPhoto.classList.remove('is-open');
         authorRevealTrack.classList.remove('is-open');
         authorRevealBtn.classList.remove('is-open');
-        authorRevealBtn.firstChild.textContent = 'Я тут! ';
+        authorRevealBtn.querySelector('span').textContent = 'ПОСМОТРЕТЬ ПОРТРЕТ ';
       } else {
+        /* Все открывается моментально и синхронно */
         authorRevealTrack.classList.add('is-open');
         authorRevealPhoto.classList.add('is-open');
         authorRevealBtn.classList.add('is-open');
-        authorRevealBtn.firstChild.textContent = 'Свернуть ';
+        authorRevealBtn.querySelector('span').textContent = 'СКРЫТЬ ПОРТРЕТ ';
       }
     });
-    /* Текст кнопки в отдельный текстовый узел, чтобы ::after не затирался */
-    authorRevealBtn.innerHTML = '<span>Я тут! </span>';
+    authorRevealBtn.innerHTML = '<span>ПОСМОТРЕТЬ ПОРТРЕТ </span>';
   }
 
   /* ─── ИНТЕРАКТИВНАЯ ФОТОГРАФИЯ (ШТОРКА) ──────────── */

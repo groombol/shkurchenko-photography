@@ -768,11 +768,9 @@ img {
   transform: translateY(2px);
 }
 
-/* ─── MOBILE AUTHOR REVEAL ───────────────────────── */
+/* ─── MOBILE AUTHOR REVEAL (Скрыто на десктопе) ───────────────────────── */
 .author-reveal-mobile {
   display: none;
-  margin-top: 24px;
-  width: 100%;
 }
 
 /* Переливающаяся полоска — всегда видна, это рамка/приглашение */
@@ -784,7 +782,7 @@ img {
   background: linear-gradient(90deg, var(--color-manifesto-1), var(--color-manifesto-2), var(--color-manifesto-1), var(--color-manifesto-2));
   background-size: 300% 100%;
   animation: manifestoGradientStream 3s linear infinite;
-  transition: height 0.7s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: height 1s cubic-bezier(0.33, 1, 0.68, 1);
   overflow: hidden;
   max-height: 3px;
 }
@@ -1785,65 +1783,121 @@ img {
     max-width: 100%;
   }
 
-  /* МОБИЛЬНАЯ АДАПТАЦИЯ ФОТО АВТОРА */
+  /* ─── МОБИЛЬНАЯ ШТОРКА (БЕЗ КОНФЛИКТОВ) ─── */
+
+  /* УБИВАЕМ ДЕСКТОПНЫЙ АРТЕФАКТ НА МОБИЛКАХ */
   .philosophy-drawer {
-    display: none;
+    display: none !important;
   }
 
   .author-reveal-mobile {
     display: block;
     margin-top: 16px;
     margin-bottom: 0;
+    padding: 0;
+    width: 100%;
   }
 
-  /* Переопределяем трек для мобильных — используем max-height для анимации */
   .author-reveal-track {
-    height: auto !important;
-    max-height: 4px !important; /* Оставляем 4px как намек на контент */
-    padding: 1px; /* Показываем переливающуюся рамку */
-    transition: max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    position: relative;
+    height: 4px;
+    max-height: none;
+    /* Блокировка любых старых ограничений */
+    transition: height 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    border: 2px solid transparent;
+    background-image:
+      linear-gradient(var(--color-bg-dark), var(--color-bg-dark)),
+      linear-gradient(90deg, var(--color-manifesto-1), var(--color-manifesto-2), var(--color-manifesto-1), var(--color-manifesto-2));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 300% 100%;
+    animation: manifestoGradientStream 3s linear infinite;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    border-radius: 2px;
   }
 
   .author-reveal-track.is-open {
-    max-height: 100vw !important;
-    height: auto !important;
+    height: calc(100vw - 48px);
   }
 
-  /* Фото внутри трека на мобильных — квадратное и без жёсткой высоты */
   .author-reveal-photo {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    height: 0 !important;
-    width: 100%;
-    padding-bottom: 100%; /* aspect-ratio 1:1 trick */
-    opacity: 1 !important;
-    transform: none !important;
-    overflow: hidden;
-    transition: none !important;
-  }
-
-  .author-reveal-photo img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100vw - 48px);
+    /* Статичная фиксация геометрии */
+    margin: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+    pointer-events: none;
+    display: block;
+    border-radius: 1px;
   }
 
-  .author-reveal-photo.is-open {
-    /* Уже виден через max-height трека */
+  .author-reveal-track.is-open .author-reveal-photo {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .author-reveal-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: contrast(1.1) brightness(0.9) grayscale(15%);
   }
 
   .author-reveal-btn {
-    font-size: 18px;
-    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 12px 0 0;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid rgba(224, 214, 209, 0.2);
+    border-radius: 0;
+    color: var(--color-cream);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .author-reveal-btn.is-open {
+    border-color: rgba(224, 214, 209, 0.4);
   }
 
   .author-reveal-btn::before {
-    font-size: 26px;
+    content: '↓';
+    font-size: 16px;
+    margin-left: 8px;
+    order: 1;
+    line-height: 1;
+    display: block;
+    animation: btnPulse 2s infinite;
+  }
+
+  .author-reveal-btn.is-open::before {
+    content: '↑';
+    animation: none;
+  }
+
+  @keyframes btnPulse {
+
+    0%,
+    100% {
+      transform: translateY(-2px);
+    }
+
+    50% {
+      transform: translateY(3px);
+    }
   }
 
   /* Уменьшаем отступ в низу секции философии */
