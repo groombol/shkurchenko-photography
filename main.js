@@ -219,15 +219,46 @@
   revealEls.forEach((el) => revealObserver.observe(el));
 
   /* ─── ПЛАВНЫЙ СКРОЛЛ (АБСОЛЮТНАЯ НАТИВНАЯ ФИЗИКА) ───────── */
+  // Предзагружаем все lazy-изображения при первом клике по навигации,
+  // чтобы избежать сдвига layout и неточного скролла на мобильных устройствах.
+  let lazyImagesLoaded = false;
+
+  function ensureLazyImagesLoaded() {
+    if (lazyImagesLoaded) return Promise.resolve();
+    lazyImagesLoaded = true;
+
+    const lazyImgs = document.querySelectorAll('img[loading="lazy"]');
+    lazyImgs.forEach(img => { img.loading = 'eager'; });
+
+    // Ждём загрузки всех незагруженных картинок
+    const pending = Array.from(lazyImgs).filter(img => !img.complete);
+    if (pending.length === 0) return Promise.resolve();
+
+    return Promise.all(pending.map(img =>
+      new Promise(resolve => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      })
+    ));
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
       if (targetId === '#') return;
 
-      // Мы БОЛЬШЕ НЕ блокируем клик. 
-      // Браузер сам моментально и точно прокрутит страницу.
-      // Скрипту остается только свернуть меню.
+      const targetEl = document.querySelector(targetId);
+      if (!targetEl) { closeSidebar(); return; }
+
+      e.preventDefault();
       closeSidebar();
+
+      ensureLazyImagesLoaded().then(() => {
+        // Небольшая задержка для завершения перерисовки после закрытия sidebar
+        setTimeout(() => {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      });
     });
   });
 

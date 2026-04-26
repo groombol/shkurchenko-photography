@@ -446,37 +446,46 @@ img {
   padding: 0 40px;
 }
 
-.nav-group-title {
+.nav-group-title,
+.sidebar-main-link {
   font-family: var(--font-deco);
   font-size: 22px;
-  letter-spacing: 0.2em;
-  color: var(--color-gold);
-  opacity: 0.8;
-  margin-bottom: -8px;
+  letter-spacing: 0.18em;
+  color: var(--color-white);
+  transition: color var(--transition-fast);
+}
+
+.nav-group-title {
+  font-weight: 100;
+  -webkit-text-stroke: 0.2px var(--color-cream);
+  margin-top: 10px;
+  margin-bottom: 12px;
+  opacity: 0.85;
 }
 
 .side-link {
-  font-size: 16px;
+  font-size: 20px;
+  letter-spacing: normal;
+  transition: color var(--transition-fast);
 }
 
-/* ─── БУРГЕР-МЕНЮ (Адаптивный текст и видимые полосы) ─── */
-.sidebar-main-link, 
-.nav-group-title {
-  font-family: var(--font-deco);
-  font-size: 19px !important; /* Уменьшили, чтобы текст не ломал рамки */
-  letter-spacing: 0.12em !important; 
-  color: var(--color-white);
-  white-space: normal !important; /* Разрешаем естественный перенос */
-  display: inline-block;
+.side-link span,
+.side-link .section-number {
+  font-size: 20px !important;
+  letter-spacing: normal !important;
+}
+
+.side-nav a:hover {
+  color: var(--color-white) !important;
 }
 
 .side-divider {
-  display: block !important; /* Принудительно возвращаем полосы */
-  width: 100%;
-  max-width: 220px; /* Ограничиваем длину полосы под текст */
-  height: 1px;
-  background: rgba(224, 214, 209, 0.2);
-  margin: 18px 0 !important; /* Отступы от текста */
+  display: block !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: var(--color-cream);
+  opacity: 0.15 !important;
+  margin: 20px 0 !important;
 }
 
 .sidebar-philosophy-link {
@@ -1053,19 +1062,22 @@ img {
 /* ─── ЗАГОЛОВКИ ПОРТФОЛИО (Чистая эстетика формы) ─── */
 .section-title {
   font-family: var(--font-deco);
-  font-size: clamp(32px, 4vw, 54px); 
+  font-size: clamp(28px, 3.8vw, 50px);
   letter-spacing: 0.12em;
   color: var(--color-white);
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
   display: inline-block;
-  
+
   /* Отсекаем всё лишнее */
-  border-bottom: none !important; /* Удаляем подчеркивание */
+  border-bottom: none !important;
+  /* Удаляем подчеркивание */
   padding-bottom: 0 !important;
-  -webkit-text-stroke: 0px !important; /* Убиваем обводку */
-  font-weight: 400 !important; /* Сбрасываем жирность */
+  -webkit-text-stroke: 0px !important;
+  /* Убиваем обводку */
+  font-weight: 400 !important;
+  /* Сбрасываем жирность */
 }
 
 .section-desc {
@@ -1094,6 +1106,7 @@ img {
   cursor: pointer;
   pointer-events: auto;
   z-index: 1;
+  -webkit-text-stroke: 0.2px currentColor;
 }
 
 .btn-outline:hover {
@@ -1755,14 +1768,14 @@ img {
 
   .portfolio-section,
   .philosophy-section {
-    padding: 80px 24px;
+    padding: 60px 24px;
     min-height: auto;
   }
 
   .section-inner,
   .section-inner.reverse {
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
   }
 
   .section-text {
@@ -1778,6 +1791,7 @@ img {
   .author-reveal-mobile {
     display: block;
     margin-top: 16px;
+    margin-bottom: 40px;
   }
 
   .author-reveal-btn {
@@ -1787,6 +1801,26 @@ img {
 
   .author-reveal-btn::before {
     font-size: 26px;
+  }
+
+  .author-reveal-track.is-open,
+  .author-reveal-photo.is-open {
+    aspect-ratio: 1 / 1;
+    height: auto !important;
+  }
+
+  .philosophy-section h2.section-title,
+  .philosophy-title-gradient {
+    max-width: 250px;
+    font-size: 22px !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .portfolio-section h2.section-title,
+  h2.section-title,
+  .section-title {
+    font-size: 22px !important;
+    letter-spacing: 0.18em !important;
   }
 
   .section-gallery {
@@ -1994,12 +2028,13 @@ img {
 /* ─── ЦИФРЫ ПРОЦЕССА ─── */
 .process-num {
   font-family: var(--font-deco);
-  font-size: 28px; 
+  font-size: 28px;
   color: var(--color-dark);
   opacity: 0.7;
   margin-top: -4px;
   min-width: 40px;
-  -webkit-text-stroke: 0.2px var(--color-dark); /* Требуемая обводка 0.2px */
+  -webkit-text-stroke: 0.2px var(--color-dark);
+  /* Требуемая обводка 0.2px */
 }
 
 /* FAQ */
